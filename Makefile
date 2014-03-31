@@ -8,6 +8,7 @@ SRC += fft.c
 
 OBJ = $(SRC:.c=.o)
 
+
 all: $(TARGET)
 	
 $(TARGET): obj
@@ -16,6 +17,7 @@ $(TARGET): obj
 	#cp $(TARGET) ../bin
 
 obj: $(SRC)
+	#$(CC) -Wall -std=c99 -c -g $(SRC) 
 	$(CC) -Wall -c -g $(SRC) 
 clean:
 	rm -f *.o $(TARGET) 
