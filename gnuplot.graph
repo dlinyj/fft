@@ -5,11 +5,13 @@ set output "result.ps"
 #set output "result.png"
 #set multiplot layout 2,1
 set grid xtics ytics
+set mytics 
 set log x
 set xlabel "Freq, Hz" 
-set ylabel "Amp"
+set ylabel "Amp, dB"
 set xrange [10:22050]
 #set yrange [-3:3]
+#set xrange [99:101]
 #set style line 1 lt 1 lw 50
 #set style line 1 lt 1 lw 1
 plot "test.txt" using 1:2 title "AFC" with lines linestyle 1

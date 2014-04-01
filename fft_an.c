@@ -141,15 +141,49 @@ int main(int argc, char *argv[]) {
 	double delta=((float)header.frequency)/(float)size_array;
 	//printf("delta=%3.10f",delta);
 	double cur_freq=0;
-	for(i=0;i<(2*size_array);i+=2) {
-		//fprintf(logfile,"%.6f %f\n",cur_freq, (sqrt(out[i]*out[i]+out[i+1]*out[i+1])));
+	
+	double * ampl;
+	ampl = calloc(size_array*2, sizeof(double));
+	
+	double max;
+	int start_max=0;
+	int pos_max=0;
+	//for(i=0;i<(2*size_array);i+=2) {
+	for(i=0;i<(size_array);i+=2) {
 		fprintf(logfile,"%.6f %f\n",cur_freq, (sqrt(out[i]*out[i]+out[i+1]*out[i+1])));
+		ampl[i]=cur_freq; //freq
+		ampl[i+1]=sqrt(out[i]*out[i]+out[i+1]*out[i+1]); //amp
+		
+		if(((ampl[i+1]-150) >0) && (!start_max)) {
+			start_max = 1;
+			max=ampl[i+1];
+			pos_max=i;
+		}
+		
+		if (start_max) {
+			if((ampl[i+1]-100) >0) {
+				if(ampl[i+1]>max) max=ampl[i+1];
+				pos_max=i;
+			} else {
+				printf("Max Freq = %.3f , amp =%.3f\n",ampl[pos_max],ampl[pos_max+1]);
+				start_max =0;
+			}
+		}
+		
+		
 		cur_freq+=delta;
-		//j++;
 	}
 	
+	for(i=2;i<(2*size_array-2);i+=2) {
+		//fprintf(logfile,"%.6f %f\n",ampl[i], (ampl[i-1]-ampl[i+3])/2); // df/dx
+	}
+	
+	free(c);
+	free(in);
+	free(out);
+	free(ampl);
+
 	fclose(logfile);
 	fclose(wav);
-	//printf("%lld\n",sum);
 	exit(0);
 }
