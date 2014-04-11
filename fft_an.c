@@ -1,3 +1,18 @@
+/* make_wav.c
+ * Create spectr file test.txt from wav file monophonic, 
+ * signed 16-bit samples
+ * 
+ * 
+ * 
+ * April 11 12:58 2014 Dolin Sergey
+ * Creative Commons license Attribution-NonCommercial
+ *  http://creativecommons.org/licenses/by-nc/3.0/
+ * 
+ * Edited by Dolin Sergey. dlinyj@gmail.com
+ * April 11 12:58 2014
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> // for memcmp
@@ -131,8 +146,8 @@ int main(int argc, char *argv[]) {
 
 		//fprintf(logfile,"%d %hi\n",i, value);
 		in[j]=(float)value;
-		i++;
 		j+=2;
+		i++;
 		if (i > size_array)  break;
 	}
 	//fft_calc(p2, c,	in,	out, 0);
@@ -154,16 +169,18 @@ int main(int argc, char *argv[]) {
 		ampl[i]=cur_freq; //freq
 		ampl[i+1]=sqrt(out[i]*out[i]+out[i+1]*out[i+1]); //amp
 		
-		if(((ampl[i+1]-150) >0) && (!start_max)) {
+		if(((ampl[i+1]-160) >0) && (!start_max)) {
+			//printf("firstmax=%.3f\n",ampl[i+1]);
 			start_max = 1;
 			max=ampl[i+1];
 			pos_max=i;
 		}
 		
 		if (start_max) {
-			if((ampl[i+1]-100) >0) {
-				if(ampl[i+1]>max) max=ampl[i+1];
+			if((ampl[i+1]-160) >0) {
+				if(ampl[i+1]>max) {max=ampl[i+1];
 				pos_max=i;
+				}
 			} else {
 				printf("Max Freq = %.3f , amp =%.3f\n",ampl[pos_max],ampl[pos_max+1]);
 				start_max =0;
